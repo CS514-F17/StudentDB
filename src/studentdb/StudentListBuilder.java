@@ -2,6 +2,7 @@ package studentdb;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentListBuilder {
@@ -24,8 +25,59 @@ public class StudentListBuilder {
 	 * @return
 	 */
 	public StudentList buildStudentList(String directory) {
-		return null;
+		StudentList sl = new StudentList();
+		
+		File file = new File(directory);
+		
+		if(!file.isDirectory()) {
+			return null;
+		}
+		File[] files = file.listFiles();
+		
+		//processFile -- if null is returned, don't add it to the list!
+		
+		return sl;
+		
 	}
+	
+	
+	private Student processFile(File file) {
+		//create student reference
+		Student s = null;
+		
+		//read in from the file
+		//instantiate the object
+		try(Scanner input = new Scanner(file)) {
+			 
+			String name = null;
+			ArrayList<Integer> scores = new ArrayList<Integer>();
+			
+			if(input.hasNext()) {
+				name = input.nextLine();
+			}
+			if(input.hasNextInt()) {
+				scores.add(input.nextInt());
+			}
+			if(input.hasNextInt()) {
+				scores.add(input.nextInt());
+			}
+			if(input.hasNextInt()) {
+				scores.add(input.nextInt());
+			}
+			if(scores.size() != 3 || input.hasNextInt()) {
+				return null;
+			}
+			s = new Student(name, scores);
+			
+		} catch(FileNotFoundException fnf) {
+			System.out.println(fnf.getMessage());
+			return null;
+		}		
+		
+		//return
+		return s;
+	}
+	
 	
 	//consider some private helper methods!
 }
