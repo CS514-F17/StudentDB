@@ -25,22 +25,56 @@ public class StudentListBuilder {
 	 * @return
 	 */
 	public StudentList buildStudentList(String directory) {
-		StudentList sl = new StudentList();
 		
+		StudentList sl = new StudentList();		
 		File file = new File(directory);
-		
 		if(!file.isDirectory()) {
 			return null;
 		}
 		File[] files = file.listFiles();
 		
-		//processFile -- if null is returned, don't add it to the list!
+		for(File f: files) {
+			String name = f.getName();
+			if(!isValid(name)) {
+				continue;
+			}
+			Student s = processFile(f);
+			if(s != null) {
+				sl.addStudent(s);
+			}			
+		}		
 		
+		//processFile -- if null is returned, don't add it to the list!		
 		return sl;
 		
 	}
 	
+	private boolean isValid(String name) {
+		if(!name.endsWith(".txt")) {
+			return false;
+		}
+		String[] result = name.split("\\.");
+		if(result.length != 2) {
+			return false;
+		}
+		String noExtension = result[0];
+		if(noExtension.length() != 7) {
+			return false;
+		}
+		for(int i = 0; i < noExtension.length(); i++) {
+			if(!Character.isDigit(noExtension.charAt(i))) {
+				return false;
+			}
+		}		
+		return true;
+	}
 	
+	/**
+	 * Processes a single file. Returns a student object to represent
+	 * the file. Returns null in case the file was not valid.
+	 * @param file
+	 * @return
+	 */
 	private Student processFile(File file) {
 		//create student reference
 		Student s = null;
@@ -52,6 +86,7 @@ public class StudentListBuilder {
 			String name = null;
 			ArrayList<Integer> scores = new ArrayList<Integer>();
 			
+			//TODO: figure out a less hacky way to do this.
 			if(input.hasNext()) {
 				name = input.nextLine();
 			}
