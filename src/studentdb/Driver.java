@@ -18,7 +18,19 @@ public class Driver {
 	 */
 	public static void main(String[] args) {
 		
+		//testing args array
+//		for(int i = 0; i < args.length; i++) {
+//			System.out.println(args[i]);
+//		}
 		
+		if(args.length != 1) {
+			System.out.println("invalid usage");
+			return;
+		}
+		
+		String inputDirectory = args[0];
+		System.out.println("Input directory: " + inputDirectory);
+		//...use the variable inputDirectory
 		
 		
 	}
